@@ -1,5 +1,5 @@
 package Scalar::Lazy::Cached;
-use 5.008_001;
+use 5.009_004;
 use strict;
 use warnings;
 
@@ -29,7 +29,7 @@ use overload (
 
 package # hide from PAUSE
     Scalar::Lazy::Cached::Inflated;
-use 5.008_001;
+use 5.009_004;
 use strict;
 use warnings;
 use Hash::Util::FieldHash qw/fieldhash/;

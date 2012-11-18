@@ -26,7 +26,9 @@ use inc::Module::Install;
 
 all_from 'lib/Scalar/Lazy/Cached.pm';
 
-
+requires 'parent';
+requires 'Scala::Lazy';
+requires 'Hash::Util::FieldHash';
 test_requires 'Test::More'     => '0.88';
 test_requires 'Test::Requires' => '0.06';
 
