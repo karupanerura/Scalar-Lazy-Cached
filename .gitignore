@@ -25,3 +25,6 @@ cover_db*
 *.gcno
 *.gcov
 *.stackdump
+Build*
+!Build.PL
+_build/
