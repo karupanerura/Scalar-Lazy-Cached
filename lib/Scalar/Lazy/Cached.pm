@@ -8,6 +8,8 @@ our $VERSION = '0.01';
 use parent qw/Scalar::Lazy/;
 our @EXPORT = qw/ delay lazy /;
 
+use Hash::Util::FieldHash qw/fieldhash/;
+
 sub lazy(&;$) {## no critic
     __PACKAGE__->new(@_);
 }
@@ -16,41 +18,15 @@ no warnings 'once';
 *delay = \&lazy;
 use warnings 'once';
 
+fieldhash my %value;
 sub force($) {## no critic
-    my $val = $_[0]->SUPER::force;
-    Scalar::Lazy::Cached::Inflated->rebless($_[0] => $val);
-    return $val;
+    my $self = shift;
+    return exists($value{$self}) ? $value{$self} : $value{$self} = $self->SUPER::force;
 }
 
 use overload (
     fallback => 1,
     map { $_ => sub { $_[0]->force } } qw( bool "" 0+ ${} @{} %{} &{} *{} )
-);
-
-package # hide from PAUSE
-    Scalar::Lazy::Cached::Inflated;
-use 5.009_004;
-use strict;
-use warnings;
-use Hash::Util::FieldHash qw/fieldhash/;
-
-fieldhash my %value;
-sub rebless {
-    my($class, $bless_to, $val) = @_;
-    my $self = bless $bless_to, $class;
-    $value{$self} = $val;
-    return $self;
-}
-
-sub get_value { $value{$_[0]} }
-
-no warnings 'once';
-*force = \&get_value;
-use warnings 'once';
-
-use overload (
-    fallback => 1,
-    map { $_ => sub { $_[0]->get_value } } qw( bool "" 0+ ${} @{} %{} &{} *{} )
 );
 
 1;
