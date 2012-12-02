@@ -21,7 +21,7 @@ use warnings 'once';
 fieldhash my %value;
 sub force($) {## no critic
     my $self = shift;
-    return exists($value{$self}) ? $value{$self} : $value{$self} = $self->SUPER::force;
+    return exists($value{$self}) ? $value{$self} : ($value{$self} = $self->SUPER::force);
 }
 
 use overload (
